@@ -117,9 +117,7 @@ func (s *ScalingActivityServer) handleScalingActivity(w http.ResponseWriter, r *
 		"count":     len(actions),
 	}
 
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		// Optionally log the error
-	}
+	_ = json.NewEncoder(w).Encode(response)
 }
 
 // handleHealth handles the /health endpoint
@@ -130,9 +128,7 @@ func (s *ScalingActivityServer) handleHealth(w http.ResponseWriter, r *http.Requ
 		"timestamp": time.Now(),
 		"service":   "scaling-operator",
 	}
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		// Optionally log the error
-	}
+	_ = json.NewEncoder(w).Encode(response)
 }
 
 // handleRoot handles the root endpoint
