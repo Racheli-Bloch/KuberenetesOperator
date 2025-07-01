@@ -187,6 +187,46 @@ kubectl get scalingrules
 kubectl get deployments
 ```
 
+### Running End-to-End (e2e) Tests Locally
+
+To run the e2e tests locally, you need:
+- [Docker](https://docs.docker.com/get-docker/) installed and running
+- [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation) installed
+- [Go](https://go.dev/doc/install) installed (version matching your go.mod)
+
+#### Install Kind (macOS example)
+```bash
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.29.0/kind-darwin-arm64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+kind --version
+```
+
+#### Run the e2e tests
+From the project root:
+```bash
+make test-e2e
+```
+This will:
+- Create a Kind Kubernetes cluster
+- Build and load the operator Docker image
+- Run the e2e test suite
+
+#### Expected Output
+You should see output like:
+```
+SUCCESS! -- 2 Passed | 0 Failed | 0 Pending | 0 Skipped
+```
+
+#### Clean up
+The Kind cluster is deleted automatically after the tests. To delete it manually:
+```bash
+kind delete cluster --name kuberenetesoperator-test-e2e
+```
+
+#### Note on CI
+Due to Docker-in-Docker limitations on GitHub Actions, e2e tests are skipped in CI. To fully validate e2e functionality, run the tests locally as described above.
+
 ## Development
 
 ### Local Development
