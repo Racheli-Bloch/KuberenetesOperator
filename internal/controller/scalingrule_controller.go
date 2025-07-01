@@ -186,7 +186,7 @@ func (r *ScalingRuleReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 
 // getPendingMessages queries the NATS monitoring endpoint to get pending messages for a subject
 func (r *ScalingRuleReconciler) getPendingMessages(ctx context.Context, monitoringURL, subject string) (int32, error) {
-	client := &http.Client{Timeout: 10 * time.Second}
+	httpClient := &http.Client{Timeout: 10 * time.Second}
 
 	url := fmt.Sprintf("%s/jsz", monitoringURL)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -194,11 +194,15 @@ func (r *ScalingRuleReconciler) getPendingMessages(ctx context.Context, monitori
 		return 0, fmt.Errorf("failed to create request: %w", err)
 	}
 
-	resp, err := client.Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return 0, fmt.Errorf("failed to query NATS monitoring: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			// Optionally log the error
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return 0, fmt.Errorf("NATS monitoring returned status %d", resp.StatusCode)

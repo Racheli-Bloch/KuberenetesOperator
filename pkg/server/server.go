@@ -117,7 +117,9 @@ func (s *ScalingActivityServer) handleScalingActivity(w http.ResponseWriter, r *
 		"count":     len(actions),
 	}
 
-	json.NewEncoder(w).Encode(response)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		// Optionally log the error
+	}
 }
 
 // handleHealth handles the /health endpoint
@@ -128,7 +130,9 @@ func (s *ScalingActivityServer) handleHealth(w http.ResponseWriter, r *http.Requ
 		"timestamp": time.Now(),
 		"service":   "scaling-operator",
 	}
-	json.NewEncoder(w).Encode(response)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		// Optionally log the error
+	}
 }
 
 // handleRoot handles the root endpoint
@@ -168,16 +172,18 @@ func (s *ScalingActivityServer) handleRoot(w http.ResponseWriter, r *http.Reques
                     
                     data.actions.forEach(action => {
                         const div = document.createElement('div');
-                        div.className = 'action ' + (action.toReplicas > action.fromReplicas ? 'scale-up' : 'scale-down');
+                        div.className = 'action ' +
+                            (action.toReplicas > action.fromReplicas ? 'scale-up' : 'scale-down');
                         
                         const timestamp = new Date(action.timestamp).toLocaleString();
                         div.innerHTML = '<div class="timestamp">' + timestamp + '</div>' +
-                                      '<div class="reason">' + action.reason + '</div>' +
-                                      '<div class="details">' +
-                                      '<strong>' + action.deployment + '</strong> in <strong>' + action.namespace + '</strong><br>' +
-                                      'Replicas: ' + action.fromReplicas + ' → ' + action.toReplicas + '<br>' +
-                                      'Pending Messages: ' + action.pendingMessages +
-                                      '</div>';
+                            '<div class="reason">' + action.reason + '</div>' +
+                            '<div class="details">' +
+                            '<strong>' + action.deployment + '</strong> in <strong>' +
+                            action.namespace + '</strong><br>' +
+                            'Replicas: ' + action.fromReplicas + ' \u2192 ' + action.toReplicas + '<br>' +
+                            'Pending Messages: ' + action.pendingMessages +
+                            '</div>';
                         container.appendChild(div);
                     });
                 })
@@ -193,5 +199,7 @@ func (s *ScalingActivityServer) handleRoot(w http.ResponseWriter, r *http.Reques
     </script>
 </body>
 </html>`
-	w.Write([]byte(html))
+	if _, err := w.Write([]byte(html)); err != nil {
+		// Optionally log the error
+	}
 }

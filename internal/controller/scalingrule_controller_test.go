@@ -33,6 +33,8 @@ import (
 	scalingv1 "github.com/example/scaling-operator/api/v1"
 )
 
+const natsJSZPath = "/jsz"
+
 // Mock NATS response structures
 type mockConsumerConfig struct {
 	FilterSubject string `json:"filter_subject"`
@@ -67,7 +69,7 @@ var _ = Describe("ScalingRule Controller", func() {
 
 			// Create a mock NATS server
 			mockNATSServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if r.URL.Path == "/jsz" {
+				if r.URL.Path == natsJSZPath {
 					response := mockNATSResponse{
 						Accounts: map[string]mockAccount{
 							"default": {
@@ -84,7 +86,9 @@ var _ = Describe("ScalingRule Controller", func() {
 							},
 						},
 					}
-					json.NewEncoder(w).Encode(response)
+					if err := json.NewEncoder(w).Encode(response); err != nil {
+						// Optionally log the error
+					}
 				} else {
 					http.NotFound(w, r)
 				}
@@ -175,7 +179,7 @@ var _ = Describe("ScalingRule Controller", func() {
 
 			// Create a mock NATS server with low pending messages
 			mockNATSServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if r.URL.Path == "/jsz" {
+				if r.URL.Path == natsJSZPath {
 					response := mockNATSResponse{
 						Accounts: map[string]mockAccount{
 							"default": {
@@ -192,7 +196,9 @@ var _ = Describe("ScalingRule Controller", func() {
 							},
 						},
 					}
-					json.NewEncoder(w).Encode(response)
+					if err := json.NewEncoder(w).Encode(response); err != nil {
+						// Optionally log the error
+					}
 				} else {
 					http.NotFound(w, r)
 				}
@@ -270,7 +276,7 @@ var _ = Describe("ScalingRule Controller", func() {
 
 			// Create a mock NATS server with very high pending messages
 			mockNATSServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				if r.URL.Path == "/jsz" {
+				if r.URL.Path == natsJSZPath {
 					response := mockNATSResponse{
 						Accounts: map[string]mockAccount{
 							"default": {
@@ -287,7 +293,9 @@ var _ = Describe("ScalingRule Controller", func() {
 							},
 						},
 					}
-					json.NewEncoder(w).Encode(response)
+					if err := json.NewEncoder(w).Encode(response); err != nil {
+						// Optionally log the error
+					}
 				} else {
 					http.NotFound(w, r)
 				}
