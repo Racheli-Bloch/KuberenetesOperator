@@ -7,7 +7,7 @@ A production-ready Kubernetes operator written in Go that dynamically scales Dep
 - **Dynamic Scaling**: Automatically scales Deployments up/down based on NATS queue length
 - **NATS Integration**: Uses NATS monitoring endpoint (`/jsz`) to determine pending messages
 - **Multiple ScalingRules**: Support for multiple concurrent ScalingRule CRDs
-- **Observability**: HTTP endpoint exposing recent scaling activity with beautiful UI
+- **Observability**: HTTP endpoint exposing recent scaling activity with nice UI
 - **Production Ready**: Comprehensive error handling, logging, and status updates
 - **Extensible**: Clean architecture with separation of concerns
 
@@ -32,7 +32,7 @@ The operator consists of:
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone [KuberenetesOperator repo URL](https://github.com/Racheli-Bloch/KuberenetesOperator.git)
 cd scaling-operator
 ```
 
