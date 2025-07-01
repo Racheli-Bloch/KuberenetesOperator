@@ -1,0 +1,18 @@
+apiVersion: v2
+name: scaling-operator
+description: A Kubernetes operator that dynamically scales Deployments based on NATS queue length
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - kubernetes
+  - operator
+  - nats
+  - scaling
+  - autoscaling
+home: https://github.com/example/scaling-operator
+sources:
+  - https://github.com/example/scaling-operator
+maintainers:
+  - name: Your Name
+    email: your.email@example.com 

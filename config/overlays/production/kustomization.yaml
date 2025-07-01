@@ -1,0 +1,40 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../default
+
+namespace: scaling-operator-system
+
+patches:
+- target:
+    kind: Deployment
+    name: scaling-operator-controller-manager
+  patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 2
+    - op: add
+      path: /spec/template/spec/containers/0/env/-
+      value:
+        name: LOG_LEVEL
+        value: "info"
+    - op: add
+      path: /spec/template/spec/containers/0/env/-
+      value:
+        name: METRICS_BIND_ADDRESS
+        value: ":8080"
+    - op: add
+      path: /spec/template/spec/containers/0/env/-
+      value:
+        name: HEALTH_PROBE_BIND_ADDRESS
+        value: ":8081"
+    - op: add
+      path: /spec/template/spec/containers/0/env/-
+      value:
+        name: ACTIVITY_SERVER_PORT
+        value: "8082"
+
+images:
+- name: controller
+  newTag: v1.0.0-production 

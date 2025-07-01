@@ -1,0 +1,43 @@
+apiVersion: scaling.example.com/v1
+kind: ScalingRule
+metadata:
+  name: scalingrule-sample
+  namespace: default
+spec:
+  # Name of the Deployment to scale
+  deploymentName: "my-app"
+  
+  # Namespace where the Deployment is located
+  namespace: "default"
+  
+  # Scaling limits
+  minReplicas: 1
+  maxReplicas: 10
+  
+  # NATS monitoring configuration
+  natsMonitoringURL: "http://nats:8222"
+  subject: "orders.processing"
+  
+  # Scaling thresholds
+  scaleUpThreshold: 50    # Scale up when pending messages > 50
+  scaleDownThreshold: 10  # Scale down when pending messages < 10
+  
+  # Polling interval in seconds
+  pollIntervalSeconds: 30
+---
+# Example of a second ScalingRule for a different deployment
+apiVersion: scaling.example.com/v1
+kind: ScalingRule
+metadata:
+  name: scalingrule-sample-2
+  namespace: default
+spec:
+  deploymentName: "notification-service"
+  namespace: "default"
+  minReplicas: 2
+  maxReplicas: 15
+  natsMonitoringURL: "http://nats:8222"
+  subject: "notifications.queue"
+  scaleUpThreshold: 100
+  scaleDownThreshold: 20
+  pollIntervalSeconds: 60
