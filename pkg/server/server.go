@@ -196,6 +196,6 @@ func (s *ScalingActivityServer) handleRoot(w http.ResponseWriter, r *http.Reques
 </body>
 </html>`
 	if _, err := w.Write([]byte(html)); err != nil {
-		// Optionally log the error
+		fmt.Printf("failed to write HTML response: %v\n", err)
 	}
 }

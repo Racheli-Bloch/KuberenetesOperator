@@ -19,6 +19,7 @@ package controller
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"time"
@@ -87,7 +88,7 @@ var _ = Describe("ScalingRule Controller", func() {
 						},
 					}
 					if err := json.NewEncoder(w).Encode(response); err != nil {
-						// Optionally log the error
+						fmt.Printf("failed to encode response: %v\n", err)
 					}
 				} else {
 					http.NotFound(w, r)
@@ -197,7 +198,7 @@ var _ = Describe("ScalingRule Controller", func() {
 						},
 					}
 					if err := json.NewEncoder(w).Encode(response); err != nil {
-						// Optionally log the error
+						fmt.Printf("failed to encode response: %v\n", err)
 					}
 				} else {
 					http.NotFound(w, r)
@@ -294,7 +295,7 @@ var _ = Describe("ScalingRule Controller", func() {
 						},
 					}
 					if err := json.NewEncoder(w).Encode(response); err != nil {
-						// Optionally log the error
+						fmt.Printf("failed to encode response: %v\n", err)
 					}
 				} else {
 					http.NotFound(w, r)

@@ -200,7 +200,7 @@ func (r *ScalingRuleReconciler) getPendingMessages(ctx context.Context, monitori
 	}
 	defer func() {
 		if err := resp.Body.Close(); err != nil {
-			// Optionally log the error
+			fmt.Printf("failed to close response body: %v\n", err)
 		}
 	}()
 
