@@ -160,7 +160,10 @@ make test
 ### Run Integration Tests with envtest
 
 ```bash
-# Run tests in Docker
+# Run tests in Docker (envtest-based, no Docker-in-Docker required)
+make test-docker-envtest
+
+# Run tests in Docker (original)
 make test-docker
 
 # Or run locally

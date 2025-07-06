@@ -66,6 +66,16 @@ test-docker: ## Run tests in Docker container using envtest (as required by assi
 	$(CONTAINER_TOOL) build -f Dockerfile.test -t scaling-operator-test .
 	$(CONTAINER_TOOL) run --rm scaling-operator-test
 
+.PHONY: test-docker-envtest
+test-docker-envtest: ## Run envtest-based tests in Docker container (Option A for assignment).
+	$(CONTAINER_TOOL) build -f Dockerfile.test -t scaling-operator-envtest .
+	$(CONTAINER_TOOL) run --rm scaling-operator-envtest
+
+.PHONY: test-docker-envtest-ubuntu
+test-docker-envtest-ubuntu: ## Run envtest-based tests in Docker container using Ubuntu base.
+	$(CONTAINER_TOOL) build -f Dockerfile.test.ubuntu -t scaling-operator-envtest-ubuntu .
+	$(CONTAINER_TOOL) run --rm scaling-operator-envtest-ubuntu
+
 .PHONY: test-integration
 test-integration: manifests generate fmt vet setup-envtest ## Run integration tests with envtest.
 	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) --bin-dir $(LOCALBIN) -p path)" go test ./internal/controller/... -v -ginkgo.v
