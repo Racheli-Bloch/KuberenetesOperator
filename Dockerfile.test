@@ -1,0 +1,32 @@
+# Dockerfile for running envtest-based tests
+FROM golang:1.24-alpine
+
+# Install required tools
+RUN apk add --no-cache git make bash
+
+# Set working directory
+WORKDIR /workspace
+
+# Copy go mod files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Generate code (manifests, deepcopy, etc.)
+RUN make generate
+
+# Set up envtest binaries
+RUN go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
+
+# Set up envtest Kubernetes binaries
+RUN setup-envtest use 1.33 --bin-dir /usr/local/kubebuilder/bin
+
+# Set environment variable for envtest
+ENV KUBEBUILDER_ASSETS=/usr/local/kubebuilder/bin
+
+# Run the tests
+CMD ["make", "test-integration"] 
